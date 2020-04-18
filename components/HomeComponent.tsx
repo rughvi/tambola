@@ -4,34 +4,41 @@ import {connect} from 'react-redux';
 import TicketNumber from '../CustomComponents/TicketNumber';
 import TicketGrid from '../CustomComponents/TicketGrid';
 import DBContext from '../dbRepositories/dbContext';
+import TicketsRepository from '../dbRepositories/ticketsRepository';
+
 class HomeComponent extends Component{
+    ticketsRepository: TicketsRepository;
+
     constructor(props){
-        super(props);
+        super(props);        
         this.state = {
             tickets: [],
           };
     }
 
     componentDidMount(){
-        var isInitialized = DBContext.IsInitialized();
+        var isInitialized = DBContext.Instance.IsInitialized;
         console.log('Initialized ' + isInitialized);
-        var that = this;
-        let items1 = Array.apply(null, Array(15)).map((v, i) => {
-          return { id: i, value:i + 1};
-        });
-        let items2 = Array.apply(null, Array(15)).map((v, i) => {
-            return { id: i, value:i + 1};
-          });
-        that.setState({
-          tickets: [{
-            title:'Ticket 1',
-            numbers:items1
-          },
-          {
-            title:'Ticket 2',
-            numbers:items2
-          }],
-        });
+        this.ticketsRepository = new TicketsRepository();
+        if(isInitialized){
+           this.ticketsRepository.getTickets('test')
+           .then(result =>{
+            console.log('result ' + result.tickets.ticket1[1]);
+            this.setState({
+                tickets: [{
+                  title:'Ticket 1',
+                  numbers:result.tickets.ticket1.map((v,i) => {return { id: i, value:v}})
+                },
+                {
+                  title:'Ticket 2',
+                  numbers:result.tickets.ticket2.map((v, i) => {return {id: i, value: v}})
+                }],
+              });
+           })
+           .catch(error => {
+            console.log('error ' + error);
+           });
+        }
     }
 
     onTicketNumberPressed = (number:Number) => {

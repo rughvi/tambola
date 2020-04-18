@@ -1,16 +1,27 @@
 import DBContext from './dbContext';
+import Firebase from "firebase";
 
 export default class TicketsRepository{
-    db: Firebase.database.Database;
+    private _dbContext: DBContext;
+    private _db: Firebase.database.Database;
     
     constructor(){
-        let dbContext = new DBContext();
-        this.db = dbContext.DB;
-        console.log('ticketsRepository ctr');
+        this._dbContext = DBContext.Instance;
+        this._db = this._dbContext.DB;
     }
 
-    getTickets(name:String){
-        let usersRef = this.db.collection('users');
-        let dataRef = usersRef.where('', '==', name);
+    getTickets(name:string): Promise{
+        return new Promise<string>((resolve, reject) =>{
+            let userRef = this._db.ref('/users/' + name);
+            console.log('userref ' + userRef);
+
+            userRef.on('value', (snapshot) =>{
+                console.log('snapshot' + snapshot);
+                let data = snapshot.val() ? snapshot.val() : {};
+                resolve(data);
+            }, error =>{
+                reject(error);
+            });
+        });
     }
 }
