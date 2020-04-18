@@ -12,7 +12,7 @@ class TicketGrid extends Component{
         var layout= [];
         for(let i=0; i< this.props.tickets.length; i++){
             layout.push(
-                <View style={{}}>
+                <View key={i} style={{}}>
                     <Text>{this.props.tickets[i].title}</Text>
                     <FlatList
                         data={this.props.tickets[i].numbers}

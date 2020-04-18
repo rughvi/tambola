@@ -1,0 +1,18 @@
+import Firebase from "firebase";
+import FirebaseConfig from '../firebase/firebaseconfig.tsx';
+
+class DBContext{
+    private db: Firebase.database.Database;
+
+    static IsInitialized(): boolean{
+        return !(this.db == null);
+    }
+
+    static Initialize(){
+        if(!this.db){
+            const app = Firebase.initializeApp(FirebaseConfig);
+            this.db = app.database();
+        }
+    }
+}
+export default DBContext;

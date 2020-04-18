@@ -3,7 +3,7 @@ import {View, SafeAreaView, StyleSheet, Text} from 'react-native';
 import {connect} from 'react-redux';
 import TicketNumber from '../CustomComponents/TicketNumber';
 import TicketGrid from '../CustomComponents/TicketGrid';
-
+import DBContext from '../dbRepositories/dbContext';
 class HomeComponent extends Component{
     constructor(props){
         super(props);
@@ -13,6 +13,8 @@ class HomeComponent extends Component{
     }
 
     componentDidMount(){
+        var isInitialized = DBContext.IsInitialized();
+        console.log('Initialized ' + isInitialized);
         var that = this;
         let items1 = Array.apply(null, Array(15)).map((v, i) => {
           return { id: i, value:i + 1};
