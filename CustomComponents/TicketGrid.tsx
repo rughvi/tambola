@@ -1,6 +1,6 @@
+/* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
 import {StyleSheet, View, FlatList, SectionList, Image, TouchableOpacity, Text} from 'react-native';
-import TicketNumber from './TicketNumber';
 import PropTypes from 'prop-types';
 
 class TicketGrid extends Component{
@@ -18,7 +18,7 @@ class TicketGrid extends Component{
                         data={this.props.tickets[i].numbers}
                         renderItem={({ item }) => (
                             <View style={{ flex: 1, flexDirection: 'column', margin: 1 }}>
-                                <TouchableOpacity style={styles.numberThumbnail} onPress={() => this.props.onPress(item.value)}>                        
+                                <TouchableOpacity style={item.isPressed? styles.numberPressedThumbnail :styles.numberThumbnail} onPress={() => this.props.onPress(item.value)}>                        
                                     <Text style={styles.numberText}>{item.value}</Text>
                                 </TouchableOpacity>
                             </View>
@@ -43,13 +43,19 @@ const styles = StyleSheet.create({
         //justifyContent:'space-evenly',
         flex: 1,
         paddingTop: 30,
-        backgroundColor:'red'
+        //backgroundColor:'red'
     },
     numberThumbnail: {
         justifyContent: 'center',
         alignItems: 'center',
         height:50,
         backgroundColor:'silver'
+    },
+    numberPressedThumbnail: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height:50,
+        backgroundColor:'lightblue'
     },
     numberText:{
         fontSize:20

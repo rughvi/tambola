@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import DBContext from './dbContext';
 import Firebase from "firebase";
 
@@ -13,13 +14,22 @@ export default class TicketsRepository{
     getTickets(name:string): Promise{
         return new Promise<string>((resolve, reject) =>{
             let userRef = this._db.ref('/users/' + name);
-            console.log('userref ' + userRef);
-
             userRef.on('value', (snapshot) =>{
-                console.log('snapshot' + snapshot);
-                let data = snapshot.val() ? snapshot.val() : {};
+                let data = snapshot.val() ? snapshot.val() : [];
                 resolve(data);
             }, error =>{
+                reject(error);
+            });
+        });
+    }
+
+    getNumbersRolled():Promise{
+        return new Promise((resolve, reject) =>{
+            let numbersRolledRef = this_db.ref('/numbersRolled/');
+            numbersRolledRef.on('value', (snapshot) => {
+                let data = snapshot.val() ? snapshot.val() :[];
+                resolve(data);
+            },error =>{
                 reject(error);
             });
         });

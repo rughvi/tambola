@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
 import {View, SafeAreaView, StyleSheet, Text} from 'react-native';
 import {connect} from 'react-redux';

@@ -1,16 +1,18 @@
+/* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
 import {View, SafeAreaView, StyleSheet, Text} from 'react-native';
 import {connect} from 'react-redux';
 import TicketNumber from '../CustomComponents/TicketNumber';
 import TicketGrid from '../CustomComponents/TicketGrid';
 import DBContext from '../dbRepositories/dbContext';
-import TicketsRepository from '../dbRepositories/ticketsRepository';
+import TicketsManager from '../managers/ticketsManager';
 
 class HomeComponent extends Component{
-    ticketsRepository: TicketsRepository;
+    ticketsManager: TicketsManager;
 
     constructor(props){
-        super(props);        
+        super(props);
+        this.ticketsManager = new TicketsManager();
         this.state = {
             tickets: [],
           };
@@ -19,20 +21,13 @@ class HomeComponent extends Component{
     componentDidMount(){
         var isInitialized = DBContext.Instance.IsInitialized;
         console.log('Initialized ' + isInitialized);
-        this.ticketsRepository = new TicketsRepository();
+        
         if(isInitialized){
-           this.ticketsRepository.getTickets('test')
-           .then(result =>{
-            console.log('result ' + result.tickets.ticket1[1]);
+           this.ticketsManager.getTickets('test')
+           .then(tickets =>{
+            //console.log('result ' + result.tickets.ticket1[1]);
             this.setState({
-                tickets: [{
-                  title:'Ticket 1',
-                  numbers:result.tickets.ticket1.map((v,i) => {return { id: i, value:v}})
-                },
-                {
-                  title:'Ticket 2',
-                  numbers:result.tickets.ticket2.map((v, i) => {return {id: i, value: v}})
-                }],
+                tickets: tickets,
               });
            })
            .catch(error => {
