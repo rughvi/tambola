@@ -5,16 +5,14 @@ import {connect} from 'react-redux';
 import TicketNumber from '../CustomComponents/TicketNumber';
 import TicketGrid from '../CustomComponents/TicketGrid';
 import DBContext from '../dbRepositories/dbContext';
-import TicketsManager from '../managers/ticketsManager';
 import RollManager from '../managers/rollManager';
+import {getTicketsAction} from '../actions/getTicketsAction';
 
 class HomeComponent extends Component{
-    private _ticketsManager: TicketsManager;
     private _rollManager: RollManager;
 
     constructor(props){
         super(props);
-        this._ticketsManager = new TicketsManager();
         this._rollManager = new RollManager();
         this.state = {
             tickets: [],
@@ -24,29 +22,7 @@ class HomeComponent extends Component{
     componentDidMount(){
         var isInitialized = DBContext.Instance.IsInitialized;
         console.log('Initialized ' + isInitialized);
-        
-        if(isInitialized){
-           Promise.all([this._ticketsManager.getTickets('test'),
-                        this._rollManager.getRolledNumbers()])
-           .then(result =>{
-                let tickets = result[0];
-                let numbersRolled = result[1];
-                for(ticketsKey in tickets){
-                    for(numbersKey in tickets[ticketsKey].numbers){
-                        let number = tickets[ticketsKey].numbers[numbersKey];
-                        number.isPressedNumberRolled = numbersRolled.indexOf(number.value) > -1;
-                    }
-                }
-                //console.log('result ' + tickets[0]);
-                
-                this.setState({
-                    tickets: tickets,
-                });
-           })
-           .catch(error => {
-                console.log('error ' + error);
-           });
-        }
+        this.props.getTicketsAction('test');
     }
 
     onTicketNumberPressed = (number:Number) => {
@@ -64,18 +40,24 @@ class HomeComponent extends Component{
     }
 
     render(){
-        return(
-            <SafeAreaView style={styles.container}>
-                    <View style={styles.view}>
-                        <Text>Home</Text>
-                        <TicketNumber value={23} label='23' onPress={() => this.onTicketNumberPressed(23)}></TicketNumber>
-                        <TicketGrid style={{backgroundColor:'red'}} tickets={this.state.tickets} onPress={this.onTicketNumberPressed}></TicketGrid>
-                        <TouchableOpacity style={{justifyContent:'center', alignItems:'center'}} onPress={this.onRollPressed}>
-                            <Image source={require('../images/bingo.png')} style={{width:75, height:75}}></Image>
-                        </TouchableOpacity>
-                    </View>
-                </SafeAreaView>
-        )
+        const {tickets } = this.props;
+        if(tickets == null){
+            return (<Text>Not yet</Text>);
+        }
+        else{
+            return(
+                <SafeAreaView style={styles.container}>
+                        <View style={styles.view}>
+                            <Text>Home</Text>
+                            <TicketNumber value={23} label='23' onPress={() => this.onTicketNumberPressed(23)}></TicketNumber>
+                            <TicketGrid style={{backgroundColor:'red'}} tickets={tickets} onPress={this.onTicketNumberPressed}></TicketGrid>
+                            <TouchableOpacity style={{justifyContent:'center', alignItems:'center'}} onPress={this.onRollPressed}>
+                                <Image source={require('../images/bingo.png')} style={{width:75, height:75}}></Image>
+                            </TouchableOpacity>
+                        </View>
+                    </SafeAreaView>
+            );
+        }        
     }
 }
 
@@ -99,12 +81,16 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = () => {
-    return {};
+const mapStateToProps = (state) => {
+    return {
+        tickets: state.ticketsReducer.tickets
+    };
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {};
+    return {
+        getTicketsAction : (name:string) => {dispatch(getTicketsAction(name));}
+    };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeComponent);
