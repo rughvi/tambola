@@ -21,17 +21,5 @@ export default class TicketsRepository{
                 reject(error);
             });
         });
-    }
-
-    getNumbersRolled():Promise{
-        return new Promise((resolve, reject) =>{
-            let numbersRolledRef = this_db.ref('/numbersRolled/');
-            numbersRolledRef.on('value', (snapshot) => {
-                let data = snapshot.val() ? snapshot.val() :[];
-                resolve(data);
-            },error =>{
-                reject(error);
-            });
-        });
-    }
+    }    
 }
