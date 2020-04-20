@@ -16,7 +16,7 @@ export default class TicketsManager{
                     for(let i=0; i<result.tickets.length; i++){
                         tickets.push({
                             title:'Ticket' + (i+1),
-                            numbers: result.tickets[i].map((v,i) => {return {id:1, value:v.value, isPressed:v.isPressed}})
+                            numbers: result.tickets[i].map((v,i) => {return {id:i, value:v.value, isPressed:v.isPressed}})
                         });
                     }
                     resolve(tickets);

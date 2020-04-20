@@ -26,23 +26,25 @@ class HomeComponent extends Component{
         console.log('Initialized ' + isInitialized);
         
         if(isInitialized){
-           this._ticketsManager.getTickets('test')
-           .then(tickets =>{
-            //console.log('result ' + result.tickets.ticket1[1]);
-            this.setState({
-                tickets: tickets,
-              });
+           Promise.all([this._ticketsManager.getTickets('test'),
+                        this._rollManager.getRolledNumbers()])
+           .then(result =>{
+                let tickets = result[0];
+                let numbersRolled = result[1];
+                for(ticketsKey in tickets){
+                    for(numbersKey in tickets[ticketsKey].numbers){
+                        let number = tickets[ticketsKey].numbers[numbersKey];
+                        number.isPressedNumberRolled = numbersRolled.indexOf(number.value) > -1;
+                    }
+                }
+                //console.log('result ' + tickets[0]);
+                
+                this.setState({
+                    tickets: tickets,
+                });
            })
            .catch(error => {
-            console.log('error ' + error);
-           });
-           
-           this._rollManager.getRolledNumbers()
-           .then(result =>{
-                console.log('home-getRolledNumbers-result ' + result);
-           })
-           .catch(error =>{
-            console.log('home-getRolledNumbers-error ' + error);
+                console.log('error ' + error);
            });
         }
     }
