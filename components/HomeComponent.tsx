@@ -2,11 +2,10 @@
 import React, { Component } from 'react';
 import {View, SafeAreaView, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import {connect} from 'react-redux';
-import TicketNumber from '../CustomComponents/TicketNumber';
 import TicketGrid from '../CustomComponents/TicketGrid';
-import DBContext from '../dbRepositories/dbContext';
 import RollManager from '../managers/rollManager';
 import {getTicketsAction} from '../actions/getTicketsAction';
+import {numberRolledListenerAction} from '../actions/numberRolledListenerAction';
 
 class HomeComponent extends Component{
     private _rollManager: RollManager;
@@ -20,8 +19,7 @@ class HomeComponent extends Component{
     }
 
     componentDidMount(){
-        var isInitialized = DBContext.Instance.IsInitialized;
-        console.log('Initialized ' + isInitialized);
+        this.props.numberRolledListenerAction();
         this.props.getTicketsAction('test');
     }
 
@@ -49,8 +47,8 @@ class HomeComponent extends Component{
                 <SafeAreaView style={styles.container}>
                         <View style={styles.view}>
                             <Text>Home</Text>
-                            <TicketNumber value={23} label='23' onPress={() => this.onTicketNumberPressed(23)}></TicketNumber>
                             <TicketGrid style={{backgroundColor:'red'}} tickets={tickets} onPress={this.onTicketNumberPressed}></TicketGrid>
+                            <Text style={styles.currentRolledNumber}>23</Text>
                             <TouchableOpacity style={{justifyContent:'center', alignItems:'center'}} onPress={this.onRollPressed}>
                                 <Image source={require('../images/bingo.png')} style={{width:75, height:75}}></Image>
                             </TouchableOpacity>
@@ -78,6 +76,13 @@ const styles = StyleSheet.create({
     title:{
         fontSize:20,
         fontWeight:'bold'
+    },
+    currentRolledNumber:{
+        fontSize:75,
+        alignSelf:'center',
+        fontWeight:'bold',
+        color:'purple',
+        margin:50
     }
 });
 
@@ -89,7 +94,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getTicketsAction : (name:string) => {dispatch(getTicketsAction(name));}
+        getTicketsAction : (name:string) => {dispatch(getTicketsAction(name));},
+        numberRolledListenerAction : () => {dispatch(numberRolledListenerAction());}
     };
 }
 

@@ -36,4 +36,12 @@ export default class NumbersRolledRepository{
             });
         });
     }
+
+    numbersRolledListener(){
+        let numbersRolledRef = this._db.ref('/numbersRolled/');
+        numbersRolledRef.on('value', (snapshot) =>{
+            let data = snapshot.val();
+            console.log(data);
+        });
+    }
 }
