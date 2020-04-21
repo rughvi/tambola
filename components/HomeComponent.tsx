@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import TicketGrid from '../CustomComponents/TicketGrid';
 import TicketsManager from '../managers/ticketsManager';
 import RollManager from '../managers/rollManager';
-import {getTicketsAction} from '../actions/getTicketsAction';
+import {getTickets, setTicketPressed} from '../actions/ticketsAction';
 import {numberRolledListenerAction} from '../actions/numberRolledListenerAction';
 
 class HomeComponent extends Component{
@@ -22,12 +22,12 @@ class HomeComponent extends Component{
 
     componentDidMount(){
         this.props.numberRolledListenerAction();
-        this.props.getTicketsAction('test');
+        this.props.getTickets('test');
     }
 
     onTicketNumberPressed = (ticketIndex:number, item) => {
-        this._ticketsManager.setTicketPressed('test', ticketIndex, item.id, !item.isPressed )
-        console.log(item.isPressed);
+        let isPressedNumberRolled:boolean = !item.isPressed && (this.props.numbersRolled.indexOf(item.value) > -1);        
+        this.props.setTicketPressed('test', ticketIndex, item.id, !item.isPressed, isPressedNumberRolled);
     }
 
     onRollPressed = () => {
@@ -99,8 +99,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getTicketsAction : (name:string) => {dispatch(getTicketsAction(name));},
-        numberRolledListenerAction : () => {dispatch(numberRolledListenerAction());}
+        getTickets : (name:string) => {dispatch(getTickets(name));},
+        numberRolledListenerAction : () => {dispatch(numberRolledListenerAction());},
+        setTicketPressed: (name:string, ticketIndex:number, id:number, isPressed:boolean, isPressedNumberRolled:boolean) => {dispatch(setTicketPressed(name, ticketIndex, id, isPressed, isPressedNumberRolled));}
     };
 }
 
