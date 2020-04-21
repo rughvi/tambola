@@ -43,4 +43,8 @@ export default class RollManager{
            });
         });
     }
+
+    getNextRollNumber(){
+        return (Math.floor(Math.random() * 100)) + 1;
+    }
 }

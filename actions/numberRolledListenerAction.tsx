@@ -11,7 +11,6 @@ export const numberRolledListenerAction = () => {
                 type:'UPDATENUMBERSROLLED',
                 numbersRolled:value
             });
-        });
-        
+        });        
     }
 }

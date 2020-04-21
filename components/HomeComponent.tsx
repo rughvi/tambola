@@ -28,7 +28,8 @@ class HomeComponent extends Component{
     }
 
     onRollPressed = () => {
-        this._rollManager.addRolledNumber(11)
+        let number:number = this._rollManager.getNextRollNumber();
+        this._rollManager.addRolledNumber(number)
             .then(result => {
                 console.log('Add ' + result);
             })
