@@ -1,5 +1,7 @@
 /* eslint-disable prettier/prettier */
 import NumbersRolledRepository from '../dbRepositories/numbersRolledRepository';
+import {Observable} from 'rxjs';
+import DBContext from '../dbRepositories/dbContext';
 
 export default class RollManager{
     private _numbersRolledRepository: NumbersRolledRepository;
@@ -25,5 +27,20 @@ export default class RollManager{
 
     addRolledNumber(value:number){
         return this._numbersRolledRepository.addRolledNumber(value);
+    }
+
+    getNumbersRolled(){
+        return new Observable(subscriber => {
+           let numbersRolledRef = DBContext.Instance.DB.ref('/numbersRolled/');
+           numbersRolledRef.on('value', (snapshot) =>{
+               let result = snapshot.val();
+
+               let data=[];
+                for(key in result){
+                    data.push(result[key]);
+                }
+                subscriber.next(data);
+           });
+        });
     }
 }

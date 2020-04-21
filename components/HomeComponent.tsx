@@ -48,7 +48,7 @@ class HomeComponent extends Component{
                         <View style={styles.view}>
                             <Text>Home</Text>
                             <TicketGrid style={{backgroundColor:'red'}} tickets={tickets} onPress={this.onTicketNumberPressed}></TicketGrid>
-                            <Text style={styles.currentRolledNumber}>23</Text>
+                            <Text style={styles.currentRolledNumber}>{this.props.numbersRolled?this.props.numbersRolled.slice(-1)[0]:0}</Text>
                             <TouchableOpacity style={{justifyContent:'center', alignItems:'center'}} onPress={this.onRollPressed}>
                                 <Image source={require('../images/bingo.png')} style={{width:75, height:75}}></Image>
                             </TouchableOpacity>
@@ -88,7 +88,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        tickets: state.ticketsReducer.tickets
+        tickets: state.ticketsReducer.tickets,
+        numbersRolled: state.numbersRolledReducer.numbersRolled
     };
 }
 
