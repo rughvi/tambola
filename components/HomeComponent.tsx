@@ -3,16 +3,18 @@ import React, { Component } from 'react';
 import {View, SafeAreaView, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import {connect} from 'react-redux';
 import TicketGrid from '../CustomComponents/TicketGrid';
+import TicketsManager from '../managers/ticketsManager';
 import RollManager from '../managers/rollManager';
 import {getTicketsAction} from '../actions/getTicketsAction';
 import {numberRolledListenerAction} from '../actions/numberRolledListenerAction';
 
 class HomeComponent extends Component{
     private _rollManager: RollManager;
-
+    private _ticketsManager: TicketsManager;
     constructor(props){
         super(props);
         this._rollManager = new RollManager();
+        this._ticketsManager = new TicketsManager();
         this.state = {
             tickets: [],
           };
@@ -23,8 +25,9 @@ class HomeComponent extends Component{
         this.props.getTicketsAction('test');
     }
 
-    onTicketNumberPressed = (number:Number) => {
-        console.log(number);
+    onTicketNumberPressed = (ticketIndex:number, item) => {
+        this._ticketsManager.setTicketPressed('test', ticketIndex, item.id, !item.isPressed )
+        console.log(item.isPressed);
     }
 
     onRollPressed = () => {

@@ -26,4 +26,14 @@ export default class TicketsManager{
                 });
         });
     }
+
+    setTicketPressed(name:string, ticketIndex:number, id:number, isPressed:boolean){
+        this._ticketsRepository.setTicketPressed(name, ticketIndex, id, isPressed)
+            .then(result => {
+                console.log(result);
+            })
+            .catch(error =>{
+                console.log(error);
+            });
+    }
 }

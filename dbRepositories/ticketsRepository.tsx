@@ -21,5 +21,20 @@ export default class TicketsRepository{
                 reject(error);
             });
         });
-    }    
+    }
+    
+    setTicketPressed(name:string, ticketIndex:number, id:number, isPressed:boolean): Promise{
+        return new Promise((resolve,reject) =>{
+            let ticketRef = this._db.ref('/users/' + name + '/tickets/' + ticketIndex + '/' + id);
+            ticketRef.update({
+                isPressed: isPressed
+            })
+            .then(result => {
+                resolve(result);
+            })
+            .catch(error =>{
+                reject(error);
+            })
+        });
+    }
 }

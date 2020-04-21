@@ -18,7 +18,8 @@ class TicketGrid extends Component{
                         data={this.props.tickets[i].numbers}
                         renderItem={({ item }) => (
                             <View style={{ flex: 1, flexDirection: 'column', margin: 1 }}>
-                                <TouchableOpacity style={item.isPressedNumberRolled? styles.numberPressedThumbnail :styles.numberThumbnail} onPress={() => this.props.onPress(item.value)}>                        
+                                <TouchableOpacity style={item.isPressedNumberRolled? styles.numberPressedThumbnail :styles.numberThumbnail} 
+                                                    onPress={() => this.props.onPress(i, item)}>
                                     <Text style={styles.numberText}>{item.value}</Text>
                                 </TouchableOpacity>
                             </View>
