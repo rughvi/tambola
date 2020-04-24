@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
-import {View, SafeAreaView, StyleSheet, Text, TouchableOpacity, ImageBackground} from 'react-native';
+import {View, SafeAreaView, StyleSheet, Text, TouchableOpacity, ImageBackground, Modal} from 'react-native';
 import {connect} from 'react-redux';
 import TicketGrid from '../CustomComponents/TicketGrid';
 import TicketsManager from '../managers/ticketsManager';
@@ -72,7 +72,7 @@ class HomeComponent extends Component{
                             <Text style={{fontSize:20, color:'gray'}}>{numbersRolledStr}</Text>
                             {/* <Text style={styles.currentRolledNumber}>{currentRolledNumber}</Text> */}
                             <TouchableOpacity style={{justifyContent:'center', alignItems:'center'}} onPress={this.onRollPressed}>
-                                <ImageBackground source={require('../images/circle-outline.png')} style={{width:100, height:100}}>
+                                <ImageBackground source={require('../images/circleoutline.png')} style={{width:100, height:100}}>
                                 <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
                                     <Text style={styles.currentRolledNumber}>{currentRolledNumber}</Text>
                                 </View>
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
         fontSize:50,
         alignSelf:'center',
         fontWeight:'bold',
-        color:'red',
+        color:'#3badfc',
         margin:10
     }
 });
