@@ -7,10 +7,13 @@ import TicketsManager from '../managers/ticketsManager';
 import RollManager from '../managers/rollManager';
 import {getTickets, setTicketPressed} from '../actions/ticketsAction';
 import {numberRolledListenerAction} from '../actions/numberRolledListenerAction';
+import Tts from 'react-native-tts';
 
 class HomeComponent extends Component{
     private _rollManager: RollManager;
     private _ticketsManager: TicketsManager;
+    private _lastRolledNumber:number=-1;
+
     constructor(props){
         super(props);
         this._rollManager = new RollManager();
@@ -21,6 +24,9 @@ class HomeComponent extends Component{
     }
 
     componentDidMount(){
+        Tts.addEventListener('tts-start', (event) => console.log("start", event));
+        Tts.addEventListener('tts-finish', (event) => console.log("finish", event));
+        Tts.addEventListener('tts-cancel', (event) => console.log("cancel", event));
         this.props.numberRolledListenerAction();
         this.props.getTickets('test');
     }
@@ -32,6 +38,7 @@ class HomeComponent extends Component{
 
     onRollPressed = () => {
         let number:number = this._rollManager.getNextRollNumber();
+        
         this._rollManager.addRolledNumber(number)
             .then(result => {
                 console.log('Add ' + result);
@@ -42,7 +49,14 @@ class HomeComponent extends Component{
     }
 
     render(){
-        const {tickets } = this.props;
+        const {tickets,numbersRolled} = this.props;
+        if(numbersRolled != null && numbersRolled != undefined && numbersRolled.length != 0){
+            let number = numbersRolled.slice(-1)[0];
+            if(number != this._lastRolledNumber){
+                Tts.speak(number.toString());
+                this._lastRolledNumber = number;
+            }            
+        }
         if(tickets == null){
             return (<Text>Not yet</Text>);
         }
@@ -52,7 +66,7 @@ class HomeComponent extends Component{
                         <View style={styles.view}>
                             <Text>Home</Text>
                             <TicketGrid style={{backgroundColor:'red'}} tickets={tickets} onPress={this.onTicketNumberPressed}></TicketGrid>
-                            <Text style={styles.currentRolledNumber}>{this.props.numbersRolled?this.props.numbersRolled.slice(-1)[0]:0}</Text>
+                            <Text style={styles.currentRolledNumber}>{numbersRolled?numbersRolled.slice(-1)[0]:0}</Text>
                             <TouchableOpacity style={{justifyContent:'center', alignItems:'center'}} onPress={this.onRollPressed}>
                                 <Image source={require('../images/bingo.png')} style={{width:75, height:75}}></Image>
                             </TouchableOpacity>
