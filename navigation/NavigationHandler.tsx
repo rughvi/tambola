@@ -16,7 +16,7 @@ const CreateRootNavigator = createSwitchNavigator({
         screen:LoginComponent
     }},
     {
-        initialRouteName:'Home'
+        initialRouteName:'Login'
     }
 ) 
 

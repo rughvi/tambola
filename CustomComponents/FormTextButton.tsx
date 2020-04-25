@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import PropTypes from 'prop-types';
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
         width:'100%',
         alignItems:'center',
         justifyContent:'center',
-        backgroundColor:'#428AF8',
+        backgroundColor:'#3badfc',
         marginBottom: 12,
         paddingVertical: 12,
         borderRadius: 4,
