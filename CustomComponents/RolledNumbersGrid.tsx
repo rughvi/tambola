@@ -10,14 +10,19 @@ class RolledNumbersGrid extends Component{
     
     render(){
         console.log(this.props.rolledNumbers);
+        let rolledNumbers = Array(100)
+                            .fill('')
+                            .map((item, index) => (this.props.rolledNumbers.length > index? (this.props.rolledNumbers[index]).toString(): ''));
+
         return(
             <View style={styles.container}>
-                <Text style={{alignSelf:'center', fontSize:20, fontWeight:'bold'}}>Rolled Numbers</Text>
+                <Text style={styles.title}>Rolled Numbers</Text>
                 <FlatList
-                    data={this.props.rolledNumbers}
-                    renderItem={({ item }) => (
+                    style={{marginTop:10, marginBottom:10}}
+                    data={rolledNumbers}
+                    renderItem={({ item, index }) => (
                         <View style={{ flex: 1, flexDirection: 'column', margin: 1 }}>
-                            <TouchableOpacity style={item.isPressedNumberRolled? styles.numberPressedThumbnail :styles.numberThumbnail}>
+                            <TouchableOpacity style={index % 2 == 0? styles.numberPressedThumbnail :styles.numberThumbnail}>
                                 <Text style={styles.numberText}>{item}</Text>    
                             </TouchableOpacity>
                         </View>
@@ -37,7 +42,12 @@ class RolledNumbersGrid extends Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 30,
+        padding: 20
+    },
+    title:{
+        alignSelf:'center', 
+        fontSize:20, 
+        fontWeight:'bold'
     },
     numberThumbnail: {
         justifyContent: 'center',
@@ -52,14 +62,16 @@ const styles = StyleSheet.create({
         backgroundColor:'lightblue'
     },
     numberText:{
-        fontSize:20
+        fontSize:20,
+        color:'white',
+        fontWeight:'bold'
     },
     closeButton:{
         width:'50%', 
         backgroundColor:'silver', 
         alignSelf:'center', 
         height:50, 
-        flex:1, 
+        // flex:1, 
         justifyContent:'center', 
         borderRadius:20
     }
