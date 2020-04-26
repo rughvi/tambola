@@ -52,18 +52,18 @@ const styles = StyleSheet.create({
     numberThumbnail: {
         justifyContent: 'center',
         alignItems: 'center',
-        height:50,
-        backgroundColor:'silver'
+        //height:50,
+        //backgroundColor:'silver'
     },
     numberPressedThumbnail: {
         justifyContent: 'center',
         alignItems: 'center',
-        height:50,
-        backgroundColor:'lightblue'
+        //height:50,
+        //backgroundColor:'lightblue'
     },
     numberText:{
         fontSize:20,
-        color:'white',
+        color:'gray',
         fontWeight:'bold'
     },
     closeButton:{
