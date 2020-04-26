@@ -21,10 +21,13 @@ export default class MyPopup extends Component {
 
 const styles=StyleSheet.create({
     container:{
-        flex:1
+        flex:1,
+        justifyContent:'center',
+        alignContent:'center'
     },
     centeredView: {
         flex: 1,
-        margin: 0
+        justifyContent:'center',
+        alignContent:'center'
     }
 })
