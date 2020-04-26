@@ -66,8 +66,12 @@ class HomeComponent extends Component{
                 this._lastRolledNumber = number;
             }            
         }
+
         if(tickets == null){
-            return (<Text>Not yet</Text>);
+            return (
+                <SafeAreaView style={styles.container}>
+                    <Text style={styles.initialisingText}>Please wait, initialising</Text>
+                </SafeAreaView>);
         }
         else{
             return(
@@ -148,12 +152,16 @@ const styles = StyleSheet.create({
     modalText: {
         marginBottom: 15,
         textAlign: "center"
+    },
+    initialisingText : {
+        fontSize:20
     }
 });
 
 const mapStateToProps = (state) => {
     return {
         tickets: state.ticketsReducer.tickets,
+        claim: state.ticketsReducer.claim,
         numbersRolled: state.numbersRolledReducer.numbersRolled
     };
 }
